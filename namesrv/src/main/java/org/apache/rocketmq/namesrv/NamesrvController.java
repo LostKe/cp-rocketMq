@@ -82,8 +82,10 @@ public class NamesrvController {
         this.remotingExecutor =
             Executors.newFixedThreadPool(nettyServerConfig.getServerWorkerThreads(), new ThreadFactoryImpl("RemotingExecutorThread_"));
 
+        //最重要的 broker topic consumer 等注册信息通过该处理接入
         this.registerProcessor();
 
+        //查找失效的broker并移除
         this.scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
 
             @Override
@@ -92,6 +94,7 @@ public class NamesrvController {
             }
         }, 5, 10, TimeUnit.SECONDS);
 
+        //打印配置信息
         this.scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
 
             @Override
@@ -154,7 +157,7 @@ public class NamesrvController {
 
     public void start() throws Exception {
         this.remotingServer.start();
-
+        //实时监控证书等文件的变化，可以做到不重启更新
         if (this.fileWatchService != null) {
             this.fileWatchService.start();
         }

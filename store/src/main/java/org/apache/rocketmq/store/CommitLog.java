@@ -183,6 +183,7 @@ public class CommitLog {
                 int size = dispatchRequest.getMsgSize();
                 // Normal data
                 if (dispatchRequest.isSuccess() && size > 0) {
+                    //实际文件的物理偏移量
                     mappedFileOffset += size;
                 }
                 // Come the end of the file, switch to the next file Since the
@@ -358,6 +359,7 @@ public class CommitLog {
 
             int readLength = calMsgLength(sysFlag, bodyLen, topicLen, propertiesLength);
             if (totalSize != readLength) {
+                //读取包头长度和实际计算的长度不相等
                 doNothingForDeadCode(reconsumeTimes);
                 doNothingForDeadCode(flag);
                 doNothingForDeadCode(bornTimeStamp);
@@ -627,6 +629,7 @@ public class CommitLog {
                         beginTimeInLock = 0;
                         return CompletableFuture.completedFuture(new PutMessageResult(PutMessageStatus.CREATE_MAPEDFILE_FAILED, result));
                     }
+                    //重新写入新的commitLog文件，因为知道原因了新文件写入乐观的认为写入成功
                     result = mappedFile.appendMessage(msg, this.appendMessageCallback);
                     break;
                 case MESSAGE_SIZE_EXCEEDED:
@@ -799,8 +802,7 @@ public class CommitLog {
         int queueId = msg.getQueueId();
 
         final int tranType = MessageSysFlag.getTransactionValue(msg.getSysFlag());
-        if (tranType == MessageSysFlag.TRANSACTION_NOT_TYPE
-            || tranType == MessageSysFlag.TRANSACTION_COMMIT_TYPE) {
+        if (tranType == MessageSysFlag.TRANSACTION_NOT_TYPE || tranType == MessageSysFlag.TRANSACTION_COMMIT_TYPE) {
             // Delay Delivery
             if (msg.getDelayTimeLevel() > 0) {
                 if (msg.getDelayTimeLevel() > this.defaultMessageStore.getScheduleMessageService().getMaxDelayLevel()) {
@@ -1061,6 +1063,7 @@ public class CommitLog {
             messageExtBatch.setStoreTimestamp(beginLockTimestamp);
 
             if (null == mappedFile || mappedFile.isFull()) {
+                //第一创建commitLog文件
                 mappedFile = this.mappedFileQueue.getLastMappedFile(0); // Mark: NewFile may be cause noise
             }
             if (null == mappedFile) {
@@ -1595,6 +1598,7 @@ public class CommitLog {
             }
 
             // Determines whether there is sufficient free space
+            //需要写的内容大于commitLog剩余写的空间
             if ((msgLen + END_FILE_MIN_BLANK_LENGTH) > maxBlank) {
                 this.resetByteBuffer(this.msgStoreItemMemory, maxBlank);
                 // 1 TOTALSIZE
@@ -1729,7 +1733,12 @@ public class CommitLog {
                     messagesByteBuff.reset();
                     // Here the length of the specially set maxBlank
                     byteBuffer.reset(); //ignore the previous appended messages
+
+                    //一个commitlog读到魔数后就认为是结尾了
                     byteBuffer.put(this.msgStoreItemMemory.array(), 0, 8);
+
+
+
                     return new AppendMessageResult(AppendMessageStatus.END_OF_FILE, wroteOffset, maxBlank, msgIdBuilder.toString(), messageExtBatch.getStoreTimestamp(),
                         beginQueueOffset, CommitLog.this.defaultMessageStore.now() - beginTimeMills);
                 }

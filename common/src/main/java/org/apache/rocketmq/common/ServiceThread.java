@@ -44,6 +44,7 @@ public abstract class ServiceThread implements Runnable {
 
     public void start() {
         log.info("Try to start service thread:{} started:{} lastThread:{}", getServiceName(), started.get(), thread);
+        //想要更新成功，当前这个值必须是false 否则更新失败
         if (!started.compareAndSet(false, true)) {
             return;
         }

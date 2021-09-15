@@ -106,7 +106,8 @@ public class BrokerStartup {
             if (null == commandLine) {
                 System.exit(-1);
             }
-
+            System.setProperty("rocketmq.home.dir","d:/test/mq");
+            System.setProperty("rocketmq.namesrv.addr","127.0.0.1:9876");
             final BrokerConfig brokerConfig = new BrokerConfig();
             final NettyServerConfig nettyServerConfig = new NettyServerConfig();
             final NettyClientConfig nettyClientConfig = new NettyClientConfig();
@@ -130,6 +131,7 @@ public class BrokerStartup {
                     properties.load(in);
 
                     properties2SystemEnv(properties);
+                    //这里可以不用get，set。直接反射设置值
                     MixAll.properties2Object(properties, brokerConfig);
                     MixAll.properties2Object(properties, nettyServerConfig);
                     MixAll.properties2Object(properties, nettyClientConfig);
@@ -152,6 +154,7 @@ public class BrokerStartup {
                 try {
                     String[] addrArray = namesrvAddr.split(";");
                     for (String addr : addrArray) {
+                        //检查nameServ地址的正确性,nameServ地址异常直接启动失败
                         RemotingUtil.string2SocketAddress(addr);
                     }
                 } catch (Exception e) {
@@ -206,6 +209,7 @@ public class BrokerStartup {
             }
 
             log = InternalLoggerFactory.getLogger(LoggerName.BROKER_LOGGER_NAME);
+            //启动时打印相关参数
             MixAll.printObjectProperties(log, brokerConfig);
             MixAll.printObjectProperties(log, nettyServerConfig);
             MixAll.printObjectProperties(log, nettyClientConfig);

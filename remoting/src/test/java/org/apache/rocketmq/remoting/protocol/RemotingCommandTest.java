@@ -19,6 +19,8 @@ package org.apache.rocketmq.remoting.protocol;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
+
+import io.netty.buffer.ByteBuf;
 import org.apache.rocketmq.remoting.CommandCustomHeader;
 import org.apache.rocketmq.remoting.annotation.CFNotNull;
 import org.apache.rocketmq.remoting.exception.RemotingCommandException;
@@ -37,10 +39,23 @@ public class RemotingCommandTest {
 
     @Test
     public void testMarkProtocolType_ROCKETMQProtocolType() {
+        ByteBuffer byteBuffer = ByteBuffer.allocate(4);
+
+
+        byte[] tmp = RemotingCommand.markProtocolType(100,  SerializeType.ROCKETMQ);
+        byteBuffer.put(tmp);
+        byteBuffer.flip();
+        //读4位获取一个int值
+        int anInt = byteBuffer.getInt();
+        //这里代表只取后面3个字节的值
+        int result1=anInt & 0xFFFFFF;
+
         int source = 16777215;
         SerializeType type = SerializeType.ROCKETMQ;
         byte[] result = RemotingCommand.markProtocolType(source, type);
         assertThat(result).isEqualTo(new byte[] {1, -1, -1, -1});
+
+
     }
 
     @Test

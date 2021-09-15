@@ -27,7 +27,7 @@ import org.apache.rocketmq.remoting.common.RemotingHelper;
  */
 public class Producer {
     public static void main(String[] args) throws MQClientException, InterruptedException {
-
+        System.setProperty("rocketmq.namesrv.addr","127.0.0.1:9876");
         /*
          * Instantiate with a producer group name.
          */
@@ -56,7 +56,7 @@ public class Producer {
                 /*
                  * Create a message instance, specifying topic, tag and message body.
                  */
-                Message msg = new Message("TopicTest" /* Topic */,
+                Message msg = new Message("hxl-youxi" /* Topic */,
                     "TagA" /* Tag */,
                     ("Hello RocketMQ " + i).getBytes(RemotingHelper.DEFAULT_CHARSET) /* Message body */
                 );

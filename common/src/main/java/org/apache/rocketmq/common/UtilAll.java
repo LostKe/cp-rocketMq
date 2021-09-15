@@ -274,6 +274,12 @@ public class UtilAll {
         return (byte) "0123456789ABCDEF".indexOf(c);
     }
 
+    /**
+     * 数据解压
+     * @param src
+     * @return
+     * @throws IOException
+     */
     public static byte[] uncompress(final byte[] src) throws IOException {
         byte[] result = src;
         byte[] uncompressData = new byte[src.length];
@@ -314,6 +320,13 @@ public class UtilAll {
         return result;
     }
 
+    /**
+     * 数据压缩后进行传输
+     * @param src
+     * @param level
+     * @return
+     * @throws IOException
+     */
     public static byte[] compress(final byte[] src, final int level) throws IOException {
         byte[] result = src;
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(src.length);
@@ -400,6 +413,11 @@ public class UtilAll {
         return jstack(Thread.getAllStackTraces());
     }
 
+    /**
+     * 获取堆栈信息操作
+     * @param map
+     * @return
+     */
     public static String jstack(Map<Thread, StackTraceElement[]> map) {
         StringBuilder result = new StringBuilder();
         try {

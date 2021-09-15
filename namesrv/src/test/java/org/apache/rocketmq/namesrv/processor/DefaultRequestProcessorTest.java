@@ -261,11 +261,11 @@ public class DefaultRequestProcessorTest {
         ConcurrentHashMap<String, TopicConfig> topicConfigConcurrentHashMap = new ConcurrentHashMap<>();
         TopicConfig topicConfig = new TopicConfig();
         topicConfig.setWriteQueueNums(8);
-        topicConfig.setTopicName("unit-test");
+        topicConfig.setTopicName("hxl-youxi");
         topicConfig.setPerm(6);
         topicConfig.setReadQueueNums(8);
         topicConfig.setOrder(false);
-        topicConfigConcurrentHashMap.put("unit-test", topicConfig);
+        topicConfigConcurrentHashMap.put("hxl-youxi", topicConfig);
         topicConfigSerializeWrapper.setTopicConfigTable(topicConfigConcurrentHashMap);
         Channel channel = mock(Channel.class);
         RegisterBrokerResult registerBrokerResult = routeInfoManager.registerBroker("default-cluster", "127.0.0.1:10911", "default-broker", 1234, "127.0.0.1:1001",

@@ -1132,6 +1132,7 @@ public class BrokerController {
     }
 
     private void handleSlaveSynchronize(BrokerRole role) {
+        //角色为slave的broker执行该动作，同步master数据
         if (role == BrokerRole.SLAVE) {
             if (null != slaveSyncFuture) {
                 slaveSyncFuture.cancel(false);
@@ -1147,6 +1148,7 @@ public class BrokerController {
                         log.error("ScheduledTask SlaveSynchronize syncAll error.", e);
                     }
                 }
+                //每10s做一次主从同步
             }, 1000 * 3, 1000 * 10, TimeUnit.MILLISECONDS);
         } else {
             //handle the slave synchronise

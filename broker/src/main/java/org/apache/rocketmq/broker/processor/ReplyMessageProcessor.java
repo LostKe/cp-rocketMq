@@ -75,6 +75,7 @@ public class ReplyMessageProcessor extends AbstractSendMessageProcessor implemen
         SendMessageRequestHeaderV2 requestHeaderV2 = null;
         SendMessageRequestHeader requestHeader = null;
         switch (request.getCode()) {
+            //case中不使用break 来处理版本差异
             case RequestCode.SEND_REPLY_MESSAGE_V2:
                 requestHeaderV2 =
                     (SendMessageRequestHeaderV2) request

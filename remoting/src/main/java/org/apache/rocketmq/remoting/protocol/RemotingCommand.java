@@ -182,7 +182,8 @@ public class RemotingCommand {
 
         return null;
     }
-
+    //(2) 序列化类型&消息头长度：同样占用一个int类型，第一个字节表示序列化类型，后面三个字节表示消息头长度；
+    //根据内容的长度来计算？32位int 右移24位 ，source的高8位和0000000011111111 做与运算
     public static SerializeType getProtocolType(int source) {
         return SerializeType.valueOf((byte) ((source >> 24) & 0xFF));
     }
@@ -418,7 +419,7 @@ public class RemotingCommand {
         // length
         result.putInt(length);
 
-        // header length
+        // header length(一个字节 第一位：序列化类型，后三位：消息头长度)
         result.put(markProtocolType(headerData.length, serializeTypeCurrentRPC));
 
         // header data
