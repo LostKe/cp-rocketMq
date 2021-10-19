@@ -622,6 +622,7 @@ public class MQClientInstance {
                             }
                         }
                     } else {
+                        //一个topic 可以绑定多个broker
                         topicRouteData = this.mQClientAPIImpl.getTopicRouteInfoFromNameServer(topic, 1000 * 3);
                     }
 
