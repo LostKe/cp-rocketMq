@@ -33,6 +33,10 @@ rocketMQ有序消息
 
 Topic 队列
 
+NameServer
+   broker 与所有的nameServer建立连接
+   producer/consumer 与其中一个nameServer建立连接（客户端可能会存在很多，减少nameServer的压力）
+
 rocketMQ rebalance机制（触发原因：订阅Topic的队列数量编号；消费者组信息变化）
    队列信息变化：broker宕机、broker升级等运维操作、队列扩容/缩容
    消费者组信息变化：日常发布过程中的停止与启动、消费者异常宕机、网络异常导致消费者与broker断开连接、topic订阅信息发生变化
