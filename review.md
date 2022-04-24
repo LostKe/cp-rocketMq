@@ -37,6 +37,9 @@ NameServer
    broker 与所有的nameServer建立连接
      broker启动时会拿到NameServer地址列表，循环所有nameServer 发送 register broker请求
    producer/consumer 与其中一个nameServer建立连接（客户端可能会存在很多，减少nameServer的压力）
+     客户端启动时，org.apache.rocketmq.client.impl.MQClientAPIImpl#getTopicRouteInfoFromNameServer(java.lang.String, long, boolean)
+     这里会带传一个空的地址，会走到 org.apache.rocketmq.remoting.netty.NettyRemotingClient#getAndCreateNameserverChannel
+     这里会通过取模的算法拿一个nameServer地址进行channel连接
    
 
 rocketMQ rebalance机制（触发原因：订阅Topic的队列数量编号；消费者组信息变化）
