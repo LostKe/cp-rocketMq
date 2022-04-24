@@ -35,7 +35,9 @@ Topic 队列
 
 NameServer
    broker 与所有的nameServer建立连接
+     broker启动时会拿到NameServer地址列表，循环所有nameServer 发送 register broker请求
    producer/consumer 与其中一个nameServer建立连接（客户端可能会存在很多，减少nameServer的压力）
+   
 
 rocketMQ rebalance机制（触发原因：订阅Topic的队列数量编号；消费者组信息变化）
    队列信息变化：broker宕机、broker升级等运维操作、队列扩容/缩容
