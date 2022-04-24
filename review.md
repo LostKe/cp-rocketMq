@@ -40,6 +40,9 @@ NameServer
      客户端启动时，org.apache.rocketmq.client.impl.MQClientAPIImpl#getTopicRouteInfoFromNameServer(java.lang.String, long, boolean)
      这里会带传一个空的地址，会走到 org.apache.rocketmq.remoting.netty.NettyRemotingClient#getAndCreateNameserverChannel
      这里会通过取模的算法拿一个nameServer地址进行channel连接
+     producer 通过nameServer拿到了broker地址和broker的master节点建立连接
+     consumer 通过nameServer拿到了broker地址和broker的namster|slave节点都建立连接
+     
    
 
 rocketMQ rebalance机制（触发原因：订阅Topic的队列数量编号；消费者组信息变化）
