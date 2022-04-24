@@ -51,7 +51,7 @@ rocketMQ rebalance机制（触发原因：订阅Topic的队列数量编号；消
    带来的问题：新增consumer触发rebalance机制，重复消费问题（offset异步提交）；消费暂停
 
 消费位点offset出现异常处理
-
+org.apache.rocketmq.client.impl.consumer.DefaultMQPushConsumerImpl#pullMessage
    
  
   
