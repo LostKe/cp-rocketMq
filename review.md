@@ -21,11 +21,10 @@
 2、消费组和topic的绑定关系同步至rocketMQ
    修改rocketMQ源码；tool模块增加同步绑定关系接口，消息治理平台进行调用。broker模块增加一个CustomSubscriptionGroupManager 和 源码SubscriptionGroupManage 类似
    broker接收数据维护关系数据，提供数据查询。
+   注意：broker主从同步数据也应处理 SlaveSynchronize 类添加同步这种数据的逻辑
    
-3、限制consumerGroup随意消费
-   org.apache.rocketmq.client.impl.consumer.DefaultMQPushConsumerImpl.pullMessage
-   入参org.apache.rocketmq.client.impl.consumer.PullRequest
-   中有 consumerGroup 和 topic，在这里加相关代码，检查topic是否在平台配置，检查consumerGroup和topic的关系是否在平台配置。
+3、限制consumerGroup随意消费,修改broker源码，broker推送消息给客户端这里做限制         [org.apache.rocketmq.broker.processor.PullMessageProcessor#processRequest(io.netty.channel.Channel, org.apache.rocketmq.remoting.protocol.RemotingCommand, boolean)]
+这里判断topic和consumerGroup是否存在绑定关系，如果不存在则return出去返回异常
  
    
 rocketMQ中Pull消费模式的使用场景  
