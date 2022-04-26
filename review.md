@@ -27,11 +27,10 @@
 这里判断topic和consumerGroup是否存在绑定关系，如果不存在则return出去返回异常
  
    
-rocketMQ中Pull消费模式的使用场景  
-   
 rocketMQ顺序消费
 
 rocketMQ事务消息
+
 rocketMQ有序消息
 
 Topic 队列
@@ -53,8 +52,13 @@ rocketMQ rebalance机制（触发原因：订阅Topic的队列数量编号；消
    消费者组信息变化：日常发布过程中的停止与启动、消费者异常宕机、网络异常导致消费者与broker断开连接、topic订阅信息发生变化
    带来的问题：新增consumer触发rebalance机制，重复消费问题（offset异步提交）；消费暂停
 
-消费位点offset出现异常处理
+消费位点offset出现异常处理（OFFSET_ILLEGAL the pull request offset illegal）
 org.apache.rocketmq.client.impl.consumer.DefaultMQPushConsumerImpl#pullMessage
+
+消息的存储及查找过程
+
+
+
    
  
   
