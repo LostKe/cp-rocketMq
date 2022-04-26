@@ -23,7 +23,7 @@
    broker接收数据维护关系数据，提供数据查询。
    注意：broker主从同步数据也应处理 SlaveSynchronize 类添加同步这种数据的逻辑
    
-3、限制consumerGroup随意消费,修改broker源码，broker推送消息给客户端这里做限制         [org.apache.rocketmq.broker.processor.PullMessageProcessor#processRequest(io.netty.channel.Channel, org.apache.rocketmq.remoting.protocol.RemotingCommand, boolean)]
+3、限制consumerGroup随意消费 方案：修改broker源码，broker推送消息给客户端这里做限制         [org.apache.rocketmq.broker.processor.PullMessageProcessor#processRequest(io.netty.channel.Channel, org.apache.rocketmq.remoting.protocol.RemotingCommand, boolean)]
 这里判断topic和consumerGroup是否存在绑定关系，如果不存在则return出去返回异常
  
    
