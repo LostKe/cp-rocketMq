@@ -18,11 +18,15 @@
    RocketMQ中有一个默认的topic [TBW102] ,配置文件中 autoCreateTopicEnable=true 情况下会默认创建一个 TBW102 的topic，设置默认的读写队列和broker信息，
    开发人员发送消息时topic会自动创建，该topic会复用[TBW102]的相关配置信息（org.apache.rocketmq.broker.topic.TopicConfigManager.createTopicInSendMessageMethod ）
    
-2、限制consumerGroup随意消费
+2、消费组和topic的绑定关系同步至rocketMQ
+   修改rocketMQ源码；tool模块增加同步绑定关系接口，消息治理平台进行调用。broker模块增加一个CustomSubscriptionGroupManager 和 源码SubscriptionGroupManage 类似
+   broker接收数据维护关系数据，提供数据查询。
+   
+3、限制consumerGroup随意消费
    org.apache.rocketmq.client.impl.consumer.DefaultMQPushConsumerImpl.pullMessage
    入参org.apache.rocketmq.client.impl.consumer.PullRequest
-   //TODO 绑定关系如何从治理平台上获取
-   中有 consumerGroup 和 topic，在这里加相关代码，检查topic是否在平台配置，检查consumerGroup和topic的关系是否在平台配置
+   中有 consumerGroup 和 topic，在这里加相关代码，检查topic是否在平台配置，检查consumerGroup和topic的关系是否在平台配置。
+ 
    
 rocketMQ中Pull消费模式的使用场景  
    
